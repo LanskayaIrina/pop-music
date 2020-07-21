@@ -1,13 +1,16 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { store } from './redux/store';
+import { Provider } from 'react-redux';
+
 import 'normalize.css';
 
 import { App } from './App';
 
 ReactDOM.render(
-  <React.StrictMode>
+  <Provider store={store}>
     <App />
-  </React.StrictMode>,
+  </Provider>,
   // eslint-disable-next-line no-undef
   document.getElementById('root'),
 );
