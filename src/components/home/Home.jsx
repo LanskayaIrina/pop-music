@@ -1,3 +1,14 @@
 import React from 'react';
+import { Container } from '@material-ui/core';
 
-export const Home = () => <div>home</div>;
+import Header from '../header';
+import Main from '../main';
+
+export const Home = () => {
+  return (
+    <Container maxWidth="lg">
+      <Header />
+      <Main />
+    </Container>
+  );
+};
