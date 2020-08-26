@@ -1,7 +1,9 @@
 import React from 'react';
-import { Grid } from '@material-ui/core';
+
 import Iframe from 'react-iframe';
 import { string } from 'prop-types';
+
+import { Grid } from '@material-ui/core';
 
 export const VideoPlayer = ({ isPlayingVideoId, className }) => {
   if (isPlayingVideoId === '') {

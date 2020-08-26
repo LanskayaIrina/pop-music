@@ -1,6 +1,8 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import { string, func, object } from 'prop-types';
+
 import clsx from 'clsx';
+import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
 import CardContent from '@material-ui/core/CardContent';
@@ -48,13 +50,26 @@ const titleAvatar = title => {
   ];
 };
 
-export const VideoCard = ({ title, date, description, img, id, getVideoById }) => {
+export const VideoCard = ({
+  title,
+  date,
+  description,
+  img,
+  id,
+  favoriteIconColor,
+  getVideoById,
+  toggleVideoToFavorite,
+}) => {
   const { url } = img;
   const classes = useStyles();
   const [expanded, setExpanded] = React.useState(false);
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
+  };
+
+  const addFavoriteVideo = id => {
+    toggleVideoToFavorite(id);
   };
 
   return (
@@ -80,7 +95,7 @@ export const VideoCard = ({ title, date, description, img, id, getVideoById }) =
         </div>
       </CardContent>
       <CardActions disableSpacing>
-        <IconButton aria-label="add to favorites">
+        <IconButton color={favoriteIconColor} onClick={() => addFavoriteVideo(id)} aria-label="add to favorites">
           <FavoriteIcon />
         </IconButton>
         <IconButton onClick={() => alert(`https://www.youtube.com/embed/${id}`)} aria-label="share">
@@ -102,4 +117,15 @@ export const VideoCard = ({ title, date, description, img, id, getVideoById }) =
       </Collapse>
     </Card>
   );
+};
+
+VideoCard.propTypes = {
+  title: string.isRequired,
+  date: string.isRequired,
+  description: string.isRequired,
+  img: object.isRequired,
+  id: string.isRequired,
+  favoriteIconColor: string.isRequired,
+  getVideoById: func.isRequired,
+  toggleVideoToFavorite: func.isRequired,
 };

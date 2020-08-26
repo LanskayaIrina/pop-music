@@ -2,14 +2,16 @@ import React from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
 
 import Login from './logIn';
-import { PrivateRoutes } from './privateRoutes/PrivateRoutes';
+import FormRegister from '../components/formRegister';
+import PrivateRoutes from './privateRoutes';
 
 export const AppRouter = () => {
   return (
     <Switch>
       <Redirect exact from="/" to="/login" />
       <Route path="/login" component={Login} />
-      <PrivateRoutes isAuthorized={true} />
+      <Route path="/register" component={FormRegister} />
+      <PrivateRoutes />
     </Switch>
   );
 };

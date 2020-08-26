@@ -1,14 +1,17 @@
-import { GET_VIDEOS, GET_VIDEO_ID, FIND_VIDEO } from './actionTypes';
+import { GET_VIDEOS, GET_VIDEO_ID, FIND_VIDEO, SET_CURRENT_PAGE } from './actionTypes';
 
 const initialState = {
   videos: [],
   isPlayingVideoId: '',
   filterVideoStr: '',
+  pageSize: 9,
+  totalPagesCount: 46,
+  currentPage: 1,
 };
 
 export const videoReducer = (state = initialState, action) => {
   const { type, payload } = action;
-  //console.log(payload)
+
   switch (type) {
     case GET_VIDEOS:
       return {
@@ -24,6 +27,11 @@ export const videoReducer = (state = initialState, action) => {
       return {
         ...state,
         filterVideoStr: payload,
+      };
+    case SET_CURRENT_PAGE:
+      return {
+        ...state,
+        currentPage: payload,
       };
     default:
       return state;

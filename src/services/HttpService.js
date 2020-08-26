@@ -1,7 +1,7 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom';
 
-const baseUrl = 'https://www.googleapis.com/youtube/v3/videos';
+//const baseUrl = 'https://www.googleapis.com/youtube/v3/videos';
 
 export class HttpService {
   static request = async (url, method = 'GET', body = null, options = {}) => {
@@ -18,7 +18,7 @@ export class HttpService {
       requestOptions.body = JSON.stringify(body);
     }
 
-    const response = await fetch(`${baseUrl}${url}`, requestOptions);
+    const response = await fetch(`${url}`, requestOptions);
 
     return this.parseResponse(response);
   };
@@ -38,7 +38,16 @@ export class HttpService {
   };
 
   static get = (url, options) => {
-   
     return this.request(url, 'GET', null, options);
+  };
+
+  static post = (url, body, options) => {
+    /**
+     * @param {string} url
+     * @param {object} body
+     * @param {object} options
+     */
+
+    return this.request(url, 'POST', body, options);
   };
 }

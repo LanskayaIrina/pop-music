@@ -1,23 +1,19 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { objectOf, string, func } from 'prop-types';
+import { func } from 'prop-types';
 
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
-import Link from '@material-ui/core/Link';
 import Paper from '@material-ui/core/Paper';
-import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 
 import { useFormik } from 'formik';
 
-const validateLogin = values => {
+const validateForm = values => {
   const errors = {};
 
   if (!values.email) {
@@ -37,18 +33,6 @@ const validateLogin = values => {
   }
 
   return errors;
-};
-
-const Copyright = () => {
-  return (
-    <Typography variant="body2" color="textSecondary" align="center">
-      {'Copyright © '}
-      <Link color="inherit" href="https://material-ui.com/">
-        Your Website
-      </Link>
-      {new Date().getFullYear()}
-    </Typography>
-  );
 };
 
 const useStyles = makeStyles(theme => ({
@@ -81,45 +65,29 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export const Login = ({ authUser, checkedUser, rememberedUser, checkUser, rememberUser }) => {
+export const FormRegister = ({ authUser, addUser }) => {
   const classes = useStyles();
   const { push } = useHistory();
-  const [checked, setChecked] = useState(false);
-  const submiting = () => {
-    checkUser(formik.values.email, formik.values.password);
-
-    // if (Object.keys(checkedUser).length === 0) {
-    //   alert('wrong password');
-    // }
-  };
-
-  useEffect(() => {
-    if (Object.keys(checkedUser).length !== 0) {
-      authUser(true);
-      push('/home');
-    }
-
-    // eslint-disable-next-line
-  }, [checkedUser]);
 
   const formik = useFormik({
     initialValues: {
-      email: '' || rememberedUser.email,
-      password: '' || rememberedUser.password,
+      email: '',
+      password: '',
     },
-    validate: validateLogin,
+    validate: validateForm,
     onSubmit: () => {
-      submiting();
+      const user = {
+        name: formik.values.email,
+        password: formik.values.password,
+      };
+      addUser(user);
+
+      authUser(true);
+      push('/home');
     },
   });
 
-  const rememberMe = () => {
-    const user = { email: formik.values.email, password: formik.values.password };
-    rememberUser(user);
-    setChecked(true);
-  };
-
-  const loginLayout = (
+  return (
     <Grid container component="main" className={classes.root}>
       <CssBaseline />
       <Grid item xs={false} sm={4} md={7} className={classes.image} />
@@ -127,7 +95,7 @@ export const Login = ({ authUser, checkedUser, rememberedUser, checkUser, rememb
         <div className={classes.paper}>
           <Avatar className={classes.avatar} />
           <Typography component="h1" variant="h5">
-            Sign in
+            Register
           </Typography>
           <form className={classes.form} onSubmit={formik.handleSubmit}>
             <TextField
@@ -159,42 +127,17 @@ export const Login = ({ authUser, checkedUser, rememberedUser, checkUser, rememb
               onChange={formik.handleChange}
               value={formik.values.password}
             />
-            <FormControlLabel
-              control={<Checkbox checked={checked} value="remember" color="primary" />}
-              label="Remember me"
-              onChange={rememberMe}
-            />
             <Button type="submit" fullWidth variant="contained" color="primary" className={classes.submit}>
-              Sign In
+              Register
             </Button>
-            <Grid container>
-              <Grid item xs>
-                <Link href="#" variant="body2">
-                  Forgot password?
-                </Link>
-              </Grid>
-              <Grid item>
-                <Link href="/register" variant="body2">
-                  {"Don't have an account? Sign Up"}
-                </Link>
-              </Grid>
-            </Grid>
-            <Box mt={5}>
-              <Copyright />
-            </Box>
           </form>
         </div>
       </Grid>
     </Grid>
   );
-
-  return <>{loginLayout}</>;
 };
 
-Login.propTypes = {
+FormRegister.propTypes = {
   authUser: func.isRequired,
-  checkedUser: objectOf(string).isRequired,
-  rememberedUser: objectOf(string).isRequired,
-  checkUser: func.isRequired,
-  rememberUser: func.isRequired,
+  addUser: func.isRequired,
 };
