@@ -9,7 +9,6 @@ export const getVideos = () => dispatch => {
     `${videosUrl}?part=snippet%2CcontentDetails%2Cstatistics&chart=mostPopular&maxResults=9&regionCode=US&key=${api_key}`,
   )
     .then(videos => {
-      //console.log('res', videos);
       return videos;
     })
     .then(videos => {
@@ -31,7 +30,6 @@ export const showMoreVideos = pageToken => dispatch => {
     `${videosUrl}?pageToken=${pageToken}&part=snippet%2CcontentDetails%2Cstatistics&chart=mostPopular&maxResults=9&regionCode=US&key=${api_key}`,
   )
     .then(videos => {
-      //console.log('res2', videos);
       return videos;
     })
     .then(videos => {

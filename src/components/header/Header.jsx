@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { func } from 'prop-types';
 
 import { Grid } from '@material-ui/core';
@@ -10,6 +10,11 @@ import InputBase from '@material-ui/core/InputBase';
 import { fade, makeStyles } from '@material-ui/core/styles';
 import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from '@material-ui/icons/Search';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemText from '@material-ui/core/ListItemText';
+
+import './styles.scss';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -72,46 +77,71 @@ const useStyles = makeStyles(theme => ({
       },
     },
   },
+
+  list: {
+    width: 250,
+  },
+  fullList: {
+    width: 'auto',
+  },
 }));
 
 export const Header = ({ searchVideo }) => {
   const classes = useStyles();
   const inputEl = useRef(null);
-
-  const findTrack = value => {
-    searchVideo(value);
-  };
+  const [menuIsOpen, setMenuIsOpen] = useState(false);
 
   return (
-    <Grid container className={classes.headerContainer}>
-      <Grid item xs={12}>
-        <AppBar className={classes.root} position="static">
-          <Toolbar>
-            <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="open drawer">
-              <MenuIcon />
-            </IconButton>
-            <Typography className={classes.title} variant="h5" noWrap>
-              The territory of your music
-            </Typography>
-            <div className={classes.search}>
-              <div className={classes.searchIcon}>
-                <SearchIcon />
+    <>
+      <Grid container className={classes.headerContainer}>
+        <Grid item xs={12}>
+          <AppBar className={classes.root} position="static">
+            <Toolbar>
+              <IconButton
+                onClick={() => setMenuIsOpen(true)}
+                edge="start"
+                className={classes.menuButton}
+                color="inherit"
+                aria-label="open drawer"
+              >
+                <MenuIcon />
+              </IconButton>
+              <Typography className={classes.title} variant="h5" noWrap>
+                The territory of your music
+              </Typography>
+              <div className={classes.search}>
+                <div className={classes.searchIcon}>
+                  <SearchIcon />
+                </div>
+                <InputBase
+                  inputRef={inputEl}
+                  onChange={() => searchVideo(inputEl.current.value.toLowerCase())}
+                  placeholder="Search…"
+                  classes={{
+                    root: classes.inputRoot,
+                    input: classes.inputInput,
+                  }}
+                  inputProps={{ 'aria-label': 'search' }}
+                />
               </div>
-              <InputBase
-                inputRef={inputEl}
-                onChange={() => findTrack(inputEl.current.value)}
-                placeholder="Search…"
-                classes={{
-                  root: classes.inputRoot,
-                  input: classes.inputInput,
-                }}
-                inputProps={{ 'aria-label': 'search' }}
-              />
-            </div>
-          </Toolbar>
-        </AppBar>
+            </Toolbar>
+          </AppBar>
+        </Grid>
       </Grid>
-    </Grid>
+      {menuIsOpen && (
+        <Grid container className="menu-container" onClick={() => setMenuIsOpen(false)}>
+          <Grid className="menu-list" item xs={3}>
+            <List>
+              {['Favorites videos', 'email', 'email', 'email'].map((text, index) => (
+                <ListItem button key={text}>
+                  <ListItemText primary={text} />
+                </ListItem>
+              ))}
+            </List>
+          </Grid>
+        </Grid>
+      )}
+    </>
   );
 };
 

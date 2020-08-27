@@ -4,7 +4,7 @@ import { VideoItemsContainer } from './VideoItemsContainer';
 import { showMoreVideos } from '../../redux/videos/actions';
 
 const mapStateToProps = state => ({
-  videos: state.video.videos.filter(video => video.snippet.title.includes(state.video.filterVideoStr)),
+  videos: state.video.videos.filter(video => video.snippet.title.toLowerCase().startsWith(state.video.filterVideoStr)),
   favoriteVideos: state.favoriteVideos.favorite_Videos,
   nextPageToken: state.video.nextPageToken,
 });
