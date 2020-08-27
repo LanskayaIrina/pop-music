@@ -1,4 +1,4 @@
-import { GET_VIDEOS, GET_VIDEO_ID, FIND_VIDEO, SET_CURRENT_PAGE } from './actionTypes';
+import { GET_VIDEOS, GET_VIDEO_ID, FIND_VIDEO, GET_NEXT_PAGE_TOKEN } from './actionTypes';
 import { HttpService } from '../../services/HttpService';
 import { api_key } from '../../utils/apiKey';
 
@@ -9,11 +9,12 @@ export const getVideos = () => dispatch => {
     `${videosUrl}?part=snippet%2CcontentDetails%2Cstatistics&chart=mostPopular&maxResults=9&regionCode=US&key=${api_key}`,
   )
     .then(videos => {
-      console.log('res', videos)
-      return videos.items;
+      //console.log('res', videos);
+      return videos;
     })
     .then(videos => {
-      dispatch({ type: GET_VIDEOS, payload: videos });
+      dispatch({ type: GET_VIDEOS, payload: videos.items });
+      dispatch({ type: GET_NEXT_PAGE_TOKEN, payload: videos.nextPageToken });
     });
 };
 
@@ -25,9 +26,16 @@ export const searchVideo = filterStr => dispatch => {
   dispatch({ type: FIND_VIDEO, payload: filterStr });
 };
 
-export const goToCurrentPage = page => dispatch => {
-  dispatch({
-    type: SET_CURRENT_PAGE,
-    payload: page,
-  });
+export const showMoreVideos = pageToken => dispatch => {
+  HttpService.get(
+    `${videosUrl}?pageToken=${pageToken}&part=snippet%2CcontentDetails%2Cstatistics&chart=mostPopular&maxResults=9&regionCode=US&key=${api_key}`,
+  )
+    .then(videos => {
+      //console.log('res2', videos);
+      return videos;
+    })
+    .then(videos => {
+      dispatch({ type: GET_VIDEOS, payload: videos.items });
+      dispatch({ type: GET_NEXT_PAGE_TOKEN, payload: videos.nextPageToken });
+    });
 };

@@ -5,6 +5,8 @@ import { string } from 'prop-types';
 
 import { Grid } from '@material-ui/core';
 
+import './styles.scss';
+
 export const VideoPlayer = ({ isPlayingVideoId, className }) => {
   if (isPlayingVideoId === '') {
     isPlayingVideoId = 'g04BtfhICzc';

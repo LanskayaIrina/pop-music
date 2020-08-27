@@ -1,16 +1,15 @@
-import { GET_VIDEOS, GET_VIDEO_ID, FIND_VIDEO, SET_CURRENT_PAGE } from './actionTypes';
+import { GET_VIDEOS, GET_VIDEO_ID, FIND_VIDEO, GET_NEXT_PAGE_TOKEN } from './actionTypes';
 
 const initialState = {
   videos: [],
   isPlayingVideoId: '',
   filterVideoStr: '',
-  pageSize: 9,
-  totalPagesCount: 46,
-  currentPage: 1,
+  nextPageToken: '',
 };
 
 export const videoReducer = (state = initialState, action) => {
   const { type, payload } = action;
+  //console.log('payload', payload)
 
   switch (type) {
     case GET_VIDEOS:
@@ -28,10 +27,10 @@ export const videoReducer = (state = initialState, action) => {
         ...state,
         filterVideoStr: payload,
       };
-    case SET_CURRENT_PAGE:
+    case GET_NEXT_PAGE_TOKEN:
       return {
         ...state,
-        currentPage: payload,
+        nextPageToken: payload,
       };
     default:
       return state;
