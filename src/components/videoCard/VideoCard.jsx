@@ -51,6 +51,7 @@ const titleAvatar = title => {
 };
 
 export const VideoCard = ({
+  setVideoPlayer,
   title,
   date,
   description,
@@ -65,6 +66,11 @@ export const VideoCard = ({
   const classes = useStyles();
   const [expanded, setExpanded] = useState(false);
   const objFavoriteVideo = { title, date, description, img, id };
+
+  const scrollToTop = () => {
+    // eslint-disable-next-line no-undef
+    setTimeout(() => window.scrollTo(0, 0), 1000);
+  };
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
@@ -88,7 +94,14 @@ export const VideoCard = ({
         subheader={date}
       />
       <CardContent>
-        <div className="poster-container" onClick={() => showVideoInPayer(id)}>
+        <div
+          className="poster-container"
+          onClick={() => {
+            showVideoInPayer(id);
+            setVideoPlayer(true);
+            scrollToTop();
+          }}
+        >
           <img className="poster-img" src={url} alt="poster" />
         </div>
       </CardContent>
@@ -125,6 +138,7 @@ export const VideoCard = ({
 };
 
 VideoCard.propTypes = {
+  setVideoPlayer: func.isRequired,
   title: string.isRequired,
   date: string.isRequired,
   description: string.isRequired,

@@ -1,14 +1,17 @@
 import { connect } from 'react-redux';
 
 import { Main } from './Main';
-import { getVideos } from '../../redux/videos/actions';
+import { showMoreVideos } from '../../redux/videos/actions';
 
 const mapStateToProps = state => ({
-  videos: state.video.videos.filter(video => video.snippet.title.includes(state.video.filterVideoStr)),
+  videos: state.video.videos.filter(video => video.snippet.title.toLowerCase().startsWith(state.video.filterVideoStr)),
+  favoriteVideosIds: state.favoriteVideos.favoriteVideosIds,
+  toggleFavorites: state.favoriteVideos.toggleFavorites,
+  nextPageToken: state.video.nextPageToken,
 });
 
 const mapDispatchToProps = {
-  getVideos,
+  showMoreVideos,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Main);
