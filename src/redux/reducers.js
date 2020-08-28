@@ -18,10 +18,15 @@ const authPersistConfig = {
   storage,
 };
 
+const favoriteVideosPersistConfig = {
+  key: 'favoriteVideos',
+  storage,
+}
+
 export const rootReducer = combineReducers({
   auth: persistReducer(authPersistConfig, authReducer),
   video: videoReducer,
   checkedUser: checkedUserReducer,
   rememberedUser: persistReducer(rememberedUserPersistConfig, rememberedUserReducer),
-  favoriteVideos: favoriteVideoReducer,
+  favoriteVideos: persistReducer(favoriteVideosPersistConfig, favoriteVideoReducer),
 });

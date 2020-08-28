@@ -17,7 +17,7 @@ export const getVideos = () => dispatch => {
     });
 };
 
-export const getVideoById = id => dispatch => {
+export const showVideoInPayer = id => dispatch => {
   dispatch({ type: GET_VIDEO_ID, payload: id });
 };
 

@@ -1,28 +1,52 @@
-import { TOGGLE_FAVORITES_PRODUCT } from './actionTypes';
+import { ADD_FAVORITE_VIDEO, TOGGLE_FAVORITE_VIDEOS, ADD_FAVORITE_VIDEO_ID } from './actionTypes';
 
 const initialState = {
-  favorite_Videos: [],
+  favoriteVideosIds: [],
+  toggleFavorites: false,
+  favoriteVideos: [],
 };
 
 export const favoriteVideoReducer = (state = initialState, action) => {
   const { type, payload } = action;
   switch (type) {
-    case TOGGLE_FAVORITES_PRODUCT: {
-      const { favorite_Videos } = state;
-      const videoInFavorites = favorite_Videos.find(videoId => videoId === payload);
+    case ADD_FAVORITE_VIDEO_ID: {
+      const { favoriteVideosIds } = state;
+      const videoInFavorites = favoriteVideosIds.find(videoId => videoId === payload);
 
       if (videoInFavorites !== undefined) {
         return {
           ...state,
-          favorite_Videos: favorite_Videos.filter(id => id !== payload),
+          favoriteVideosIds: favoriteVideosIds.filter(id => id !== payload),
         };
       }
 
       return {
         ...state,
-        favorite_Videos: [...favorite_Videos, payload],
+        favoriteVideosIds: [...favoriteVideosIds, payload],
       };
     }
+    case TOGGLE_FAVORITE_VIDEOS:
+      return {
+        ...state,
+        toggleFavorites: payload,
+      };
+    case ADD_FAVORITE_VIDEO:
+      {
+        const { favoriteVideos } = state;
+        const videoInFavorites = favoriteVideos.find(video => video.id === payload.id);
+
+        if (videoInFavorites !== undefined) {
+          return {
+            ...state,
+            favoriteVideos: favoriteVideos.filter(video => video.id !== payload.id),
+          };
+        }
+      }
+      return {
+        ...state,
+        favoriteVideos: [...state.favoriteVideos, payload],
+      };
+
     default:
       return state;
   }

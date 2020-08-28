@@ -1,15 +1,23 @@
 import React from 'react';
-import { func, arrayOf, object, string } from 'prop-types';
+import { func, arrayOf, object, string, bool } from 'prop-types';
 
 import { Grid } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 
 import VideoCard from '../videoCard';
+import FavoriteVideos from '../favoriteVideos';
 
 import './styles.scss';
 
-export const VideoItemsContainer = ({ videos, favoriteVideos, nextPageToken, showMoreVideos }, className) => {
-  return (
+export const VideoItemsContainer = ({
+  videos,
+  favoriteVideosIds,
+  toggleFavorites,
+  nextPageToken,
+  showMoreVideos,
+  className,
+}) => {
+  const videosLayout = (
     <>
       <Grid container className={className} spacing={3} alignContent="center">
         {videos.map((card, index) => (
@@ -21,7 +29,7 @@ export const VideoItemsContainer = ({ videos, favoriteVideos, nextPageToken, sho
               img={card.snippet.thumbnails.medium}
               id={card.id}
               favoriteIconColor={
-                favoriteVideos.filter(videoID => videoID === card.id).length !== 0 ? 'secondary' : 'default'
+                favoriteVideosIds.filter(videoID => videoID === card.id).length !== 0 ? 'secondary' : 'default'
               }
             />
           </Grid>
@@ -40,14 +48,16 @@ export const VideoItemsContainer = ({ videos, favoriteVideos, nextPageToken, sho
       </Grid>
     </>
   );
+  return <>{!toggleFavorites ? videosLayout : <FavoriteVideos className={className} />}</>;
 };
 
 VideoItemsContainer.propTypes = {
   videos: arrayOf(object).isRequired,
   favoriteVideos: arrayOf(string),
+  toggleFavorites: bool.isRequired,
   nextPageToken: string,
   showMoreVideos: func.isRequired,
-  className: object.isRequired,
+  className: string.isRequired,
 };
 
 VideoItemsContainer.defaultPropTypes = {

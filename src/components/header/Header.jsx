@@ -2,6 +2,7 @@ import React, { useRef, useState } from 'react';
 import { func } from 'prop-types';
 
 import { Grid } from '@material-ui/core';
+import Avatar from '@material-ui/core/Avatar';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
@@ -77,16 +78,19 @@ const useStyles = makeStyles(theme => ({
       },
     },
   },
-
   list: {
     width: 250,
   },
   fullList: {
     width: 'auto',
   },
+  avatar: {
+    margin: theme.spacing(1),
+    backgroundColor: '#f44336',
+  },
 }));
 
-export const Header = ({ searchVideo }) => {
+export const Header = ({ searchVideo, toggleFavorites, authUser }) => {
   const classes = useStyles();
   const inputEl = useRef(null);
   const [menuIsOpen, setMenuIsOpen] = useState(false);
@@ -124,6 +128,9 @@ export const Header = ({ searchVideo }) => {
                   inputProps={{ 'aria-label': 'search' }}
                 />
               </div>
+              <Avatar aria-label="recipe" className={classes.avatar} onClick={() => authUser(false)}>
+                Exit
+              </Avatar>
             </Toolbar>
           </AppBar>
         </Grid>
@@ -132,11 +139,12 @@ export const Header = ({ searchVideo }) => {
         <Grid container className="menu-container" onClick={() => setMenuIsOpen(false)}>
           <Grid className="menu-list" item xs={3}>
             <List>
-              {['Favorites videos', 'email', 'email', 'email'].map((text, index) => (
-                <ListItem button key={text}>
-                  <ListItemText primary={text} />
-                </ListItem>
-              ))}
+              <ListItem button key="Favorites videos" onClick={() => toggleFavorites(true)}>
+                <ListItemText primary="Favorites videos" />
+              </ListItem>
+              <ListItem button key="All videos" onClick={() => toggleFavorites(false)}>
+                <ListItemText primary="All videos" />
+              </ListItem>
             </List>
           </Grid>
         </Grid>
@@ -147,4 +155,6 @@ export const Header = ({ searchVideo }) => {
 
 Header.propTypes = {
   searchVideo: func.isRequired,
+  toggleFavorites: func.isRequired,
+  authUser: func.isRequired,
 };

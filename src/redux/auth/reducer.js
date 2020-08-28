@@ -1,4 +1,4 @@
-import { AUTH_USER } from './actionTypes';
+import { AUTH_USER, LOG_OUT } from './actionTypes';
 
 const initialState = {
   isAuthorized: false,
@@ -13,6 +13,8 @@ export const authReducer = (state = initialState, action) => {
         ...state,
         isAuthorized: payload.isAuthorized,
       };
+    case LOG_OUT:
+      return initialState;
     default:
       return state;
   }

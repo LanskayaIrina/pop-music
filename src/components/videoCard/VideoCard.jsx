@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { string, func, object } from 'prop-types';
 
 import clsx from 'clsx';
@@ -57,19 +57,17 @@ export const VideoCard = ({
   img,
   id,
   favoriteIconColor,
-  getVideoById,
-  toggleVideoToFavorite,
+  showVideoInPayer,
+  addIdVideoToFavorite,
+  addFavoriteVideo,
 }) => {
   const { url } = img;
   const classes = useStyles();
-  const [expanded, setExpanded] = React.useState(false);
+  const [expanded, setExpanded] = useState(false);
+  const objFavoriteVideo = { title, date, description, img, id };
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
-  };
-
-  const addFavoriteVideo = id => {
-    toggleVideoToFavorite(id);
   };
 
   return (
@@ -90,12 +88,19 @@ export const VideoCard = ({
         subheader={date}
       />
       <CardContent>
-        <div className="poster-container" onClick={() => getVideoById(id)}>
+        <div className="poster-container" onClick={() => showVideoInPayer(id)}>
           <img className="poster-img" src={url} alt="poster" />
         </div>
       </CardContent>
       <CardActions disableSpacing>
-        <IconButton color={favoriteIconColor} onClick={() => addFavoriteVideo(id)} aria-label="add to favorites">
+        <IconButton
+          color={favoriteIconColor}
+          onClick={() => {
+            addIdVideoToFavorite(id);
+            addFavoriteVideo(objFavoriteVideo);
+          }}
+          aria-label="add to favorites"
+        >
           <FavoriteIcon />
         </IconButton>
         <IconButton onClick={() => alert(`https://www.youtube.com/embed/${id}`)} aria-label="share">
@@ -126,6 +131,7 @@ VideoCard.propTypes = {
   img: object.isRequired,
   id: string.isRequired,
   favoriteIconColor: string.isRequired,
-  getVideoById: func.isRequired,
-  toggleVideoToFavorite: func.isRequired,
+  showVideoInPayer: func.isRequired,
+  addIdVideoToFavorite: func.isRequired,
+  addFavoriteVideo: func.isRequired,
 };

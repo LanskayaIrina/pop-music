@@ -1,12 +1,13 @@
 import { connect } from 'react-redux';
 
 import { VideoCard } from './VideoCard';
-import { getVideoById } from '../../redux/videos/actions';
-import { toggleVideoToFavorite } from '../../redux/favorites/action';
+import { showVideoInPayer } from '../../redux/videos/actions';
+import { addIdVideoToFavorite, addFavoriteVideo } from '../../redux/favorites/actions';
 
 const mapDispatchToProps = {
-  getVideoById,
-  toggleVideoToFavorite,
+  showVideoInPayer,
+  addIdVideoToFavorite,
+  addFavoriteVideo,
 };
 
 export default connect(null, mapDispatchToProps)(VideoCard);

@@ -29,7 +29,7 @@ const validateLogin = values => {
   if (!values.password) {
     errors.password = 'Required';
   } else if (values.password.length < 6) {
-    errors.password = 'Must be 6 characters or more';
+    errors.password = 'Must be 6 characters or more, 1 big letter, 1 small letter and 1 digit';
   } else if (!/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/.test(values.password)) {
     errors.password = 'Must be at list 1 big letter, 1 small letter and 1 digit';
   } else if (/\W/.test(values.password)) {
@@ -70,7 +70,7 @@ const useStyles = makeStyles(theme => ({
   },
   avatar: {
     margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main,
+    backgroundColor: '#f44336',
   },
   form: {
     width: '100%', // Fix IE 11 issue.
@@ -79,18 +79,22 @@ const useStyles = makeStyles(theme => ({
   submit: {
     margin: theme.spacing(3, 0, 2),
   },
+  createAccount: {
+    fontSize: '30px',
+  },
 }));
 
 export const Login = ({ authUser, checkedUser, rememberedUser, checkUser, rememberUser }) => {
   const classes = useStyles();
   const { push } = useHistory();
   const [checked, setChecked] = useState(false);
+  const [auth, setAuth] = useState(true);
   const submiting = () => {
     checkUser(formik.values.email, formik.values.password);
 
-    // if (Object.keys(checkedUser).length === 0) {
-    //   alert('wrong password');
-    // }
+    if (Object.keys(checkedUser).length === 0) {
+      setAuth(false);
+    }
   };
 
   useEffect(() => {
@@ -164,20 +168,30 @@ export const Login = ({ authUser, checkedUser, rememberedUser, checkUser, rememb
               label="Remember me"
               onChange={rememberMe}
             />
-            <Button type="submit" fullWidth variant="contained" color="primary" className={classes.submit}>
-              Sign In
-            </Button>
-            <Grid container>
-              <Grid item xs>
-                <Link href="#" variant="body2">
+            {auth && (
+              <Button type="submit" fullWidth variant="contained" color="primary" className={classes.submit}>
+                Sign In
+              </Button>
+            )}
+
+            <Grid container justify="center">
+              {/*<Grid item xs>
+                 <Link href="#" variant="body2">
                   Forgot password?
+                </Link> 
+              </Grid>*/}
+              {/* <Grid item> */}
+              {auth ? (
+                <Grid item>
+                  <Link href="/register" variant="body2">
+                    {"Don't have an account? Sign Up"}
+                  </Link>
+                </Grid>
+              ) : (
+                <Link className={classes.createAccount} href="/register" variant="body2">
+                  {'Create account'}
                 </Link>
-              </Grid>
-              <Grid item>
-                <Link href="/register" variant="body2">
-                  {"Don't have an account? Sign Up"}
-                </Link>
-              </Grid>
+              )}
             </Grid>
             <Box mt={5}>
               <Copyright />
