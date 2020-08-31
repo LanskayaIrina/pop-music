@@ -18,7 +18,14 @@ export const VideoPlayer = ({ isPlayingVideoId, className }) => {
     <Grid container className={className} justify="center">
       <Grid item xs={12}>
         <div className="video-container">
-          <Iframe url={url} width="100%" height="100%" id="myId" className="main-video" position="absolute" />
+          <Iframe
+            url={`${url}?autoplay=1&mute=0`}
+            width="100%"
+            height="100%"
+            id="myId"
+            className="main-video"
+            position="absolute"
+          />
         </div>
       </Grid>
     </Grid>

@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import { func } from 'prop-types';
+import { func, string } from 'prop-types';
 
 import { Grid } from '@material-ui/core';
 import Avatar from '@material-ui/core/Avatar';
@@ -90,10 +90,14 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export const Header = ({ searchVideo, toggleFavorites, authUser }) => {
+export const Header = ({ searchVideo, toggleFavorites, authUser, userName, checkedUser, changeTeme, theme }) => {
+  const avatarLetter = userName.substr(0, 1) || checkedUser.substr(0, 1);
+
+  const themeApp = theme === 'Dark' ? 'Light' : 'Dark';
   const classes = useStyles();
   const inputEl = useRef(null);
   const [menuIsOpen, setMenuIsOpen] = useState(false);
+  const [rightMenuIsOpen, setRightMenuIsOpen] = useState(false);
 
   return (
     <>
@@ -111,7 +115,7 @@ export const Header = ({ searchVideo, toggleFavorites, authUser }) => {
                 <MenuIcon />
               </IconButton>
               <Typography className={classes.title} variant="h5" noWrap>
-                The territory of your music
+                The territory of pop music
               </Typography>
               <div className={classes.search}>
                 <div className={classes.searchIcon}>
@@ -128,8 +132,8 @@ export const Header = ({ searchVideo, toggleFavorites, authUser }) => {
                   inputProps={{ 'aria-label': 'search' }}
                 />
               </div>
-              <Avatar aria-label="recipe" className={classes.avatar} onClick={() => authUser(false)}>
-                Exit
+              <Avatar aria-label="recipe" className={classes.avatar} onClick={() => setRightMenuIsOpen(true)}>
+                {avatarLetter}
               </Avatar>
             </Toolbar>
           </AppBar>
@@ -149,6 +153,20 @@ export const Header = ({ searchVideo, toggleFavorites, authUser }) => {
           </Grid>
         </Grid>
       )}
+      {rightMenuIsOpen && (
+        <Grid container className="right-menu-container" onClick={() => setRightMenuIsOpen(false)}>
+          <Grid className="menu-list" item xs={3}>
+            <List>
+              <ListItem button key="Log out" onClick={() => authUser({ isAuthorized: false })}>
+                <ListItemText primary="Log out" />
+              </ListItem>
+              <ListItem button key="Dark theme" onClick={() => changeTeme(themeApp)}>
+                <ListItemText primary={`${themeApp} theme`} />
+              </ListItem>
+            </List>
+          </Grid>
+        </Grid>
+      )}
     </>
   );
 };
@@ -157,4 +175,13 @@ Header.propTypes = {
   searchVideo: func.isRequired,
   toggleFavorites: func.isRequired,
   authUser: func.isRequired,
+  userName: string,
+  checkedUser: string,
+  changeTeme: func.isRequired,
+  theme: string.isRequired,
+};
+
+Header.defaultPropTypes = {
+  userName: '',
+  checkedUser: '',
 };

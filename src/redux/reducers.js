@@ -7,6 +7,7 @@ import { videoReducer } from './videos/reducer';
 import { checkedUserReducer } from './checkedUser/reducer';
 import { favoriteVideoReducer } from './favorites/reducer';
 import { rememberedUserReducer } from './rememberedUser/reducer';
+import { themeReducer } from './theme/reducer';
 
 const rememberedUserPersistConfig = {
   key: 'rememberedUser',
@@ -18,15 +19,26 @@ const authPersistConfig = {
   storage,
 };
 
+const checkedUserPersistConfig = {
+  key: 'checkedUser',
+  storage,
+};
+
 const favoriteVideosPersistConfig = {
   key: 'favoriteVideos',
   storage,
-}
+};
+
+const themePersistConfig = {
+  key: 'theme',
+  storage,
+};
 
 export const rootReducer = combineReducers({
   auth: persistReducer(authPersistConfig, authReducer),
   video: videoReducer,
-  checkedUser: checkedUserReducer,
+  checkedUser: persistReducer(checkedUserPersistConfig, checkedUserReducer),
   rememberedUser: persistReducer(rememberedUserPersistConfig, rememberedUserReducer),
   favoriteVideos: persistReducer(favoriteVideosPersistConfig, favoriteVideoReducer),
+  themeApp: persistReducer(themePersistConfig, themeReducer),
 });

@@ -24,7 +24,15 @@ const useStyles = makeStyles(theme => ({
       boxShadow: '0 0 10px rgba(0,0,0,0.5)',
     },
   },
-  header: { height: '80px' },
+  darkRoot: {
+    backgroundColor: '#262626',
+  },
+  header: { height: '80px', overflow: 'hidden' },
+  darkHeader: {
+    color: '#fff',
+    height: '80px',
+    overflow: 'hidden',
+  },
   expand: {
     transform: 'rotate(0deg)',
     marginLeft: 'auto',
@@ -61,6 +69,7 @@ export const VideoCard = ({
   showVideoInPayer,
   addIdVideoToFavorite,
   addFavoriteVideo,
+  theme,
 }) => {
   const { url } = img;
   const classes = useStyles();
@@ -77,9 +86,9 @@ export const VideoCard = ({
   };
 
   return (
-    <Card className={classes.root}>
+    <Card className={theme === 'Light' ? classes.root : classes.darkRoot}>
       <CardHeader
-        className={classes.header}
+        className={theme === 'Light' ? classes.header : classes.darkHeader}
         avatar={
           <Avatar aria-label="recipe" className={classes.avatar}>
             {titleAvatar(title)}
@@ -116,7 +125,7 @@ export const VideoCard = ({
         >
           <FavoriteIcon />
         </IconButton>
-        <IconButton onClick={() => alert(`https://www.youtube.com/embed/${id}`)} aria-label="share">
+        <IconButton aria-label="share">
           <ShareIcon />
         </IconButton>
         <IconButton
@@ -131,7 +140,9 @@ export const VideoCard = ({
         </IconButton>
       </CardActions>
       <Collapse in={expanded} timeout="auto" unmountOnExit>
-        <CardContent>{description}</CardContent>
+        <CardContent>
+          <div className={theme === 'Dark' && 'description-dark-theme'}>{description}</div>
+        </CardContent>
       </Collapse>
     </Card>
   );
@@ -148,4 +159,5 @@ VideoCard.propTypes = {
   showVideoInPayer: func.isRequired,
   addIdVideoToFavorite: func.isRequired,
   addFavoriteVideo: func.isRequired,
+  theme: string.isRequired,
 };

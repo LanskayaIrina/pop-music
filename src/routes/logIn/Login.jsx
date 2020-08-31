@@ -92,14 +92,20 @@ export const Login = ({ authUser, checkedUser, rememberedUser, checkUser, rememb
   const submiting = () => {
     checkUser(formik.values.email, formik.values.password);
 
-    if (Object.keys(checkedUser).length === 0) {
+    // if (Object.keys(checkedUser).length === 0) {
+    if (checkedUser[0].name === '') {
       setAuth(false);
     }
   };
 
   useEffect(() => {
-    if (Object.keys(checkedUser).length !== 0) {
-      authUser(true);
+    // if (Object.keys(checkedUser).length !== 0) {
+    if (checkedUser[0].name !== '') {
+      const userData = {
+        isAuthorized: true,
+        name: checkUser.name,
+      };
+      authUser(userData);
       push('/home');
     }
 
@@ -118,7 +124,7 @@ export const Login = ({ authUser, checkedUser, rememberedUser, checkUser, rememb
   });
 
   const rememberMe = () => {
-    const user = { email: formik.values.email, password: formik.values.password };
+    const user = { name: formik.values.name, email: formik.values.email, password: formik.values.password };
     rememberUser(user);
     setChecked(true);
   };
@@ -143,7 +149,6 @@ export const Login = ({ authUser, checkedUser, rememberedUser, checkUser, rememb
               label="Email Address"
               name="email"
               autoComplete="email"
-              autoFocus
               helperText={formik.errors.email}
               type="email"
               onChange={formik.handleChange}
@@ -175,12 +180,6 @@ export const Login = ({ authUser, checkedUser, rememberedUser, checkUser, rememb
             )}
 
             <Grid container justify="center">
-              {/*<Grid item xs>
-                 <Link href="#" variant="body2">
-                  Forgot password?
-                </Link> 
-              </Grid>*/}
-              {/* <Grid item> */}
               {auth ? (
                 <Grid item>
                   <Link href="/register" variant="body2">
@@ -188,10 +187,10 @@ export const Login = ({ authUser, checkedUser, rememberedUser, checkUser, rememb
                   </Link>
                 </Grid>
               ) : (
-                <Link className={classes.createAccount} href="/register" variant="body2">
-                  {'Create account'}
-                </Link>
-              )}
+                  <Link className={classes.createAccount} href="/register" variant="body2">
+                    {'Create account'}
+                  </Link>
+                )}
             </Grid>
             <Box mt={5}>
               <Copyright />

@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { func } from 'prop-types';
+import { func, string } from 'prop-types';
 
 import { Container } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
@@ -12,9 +12,13 @@ const useStyles = makeStyles(theme => ({
     flexGrow: 1,
     marginBottom: theme.spacing(3),
   },
+  darkTeme: {
+    backgroundColor: '#000',
+    minHeight: '100vh',
+  },
 }));
 
-export const Home = ({ getVideos }) => {
+export const Home = ({ getVideos, theme }) => {
   const classes = useStyles();
 
   useEffect(() => {
@@ -23,13 +27,16 @@ export const Home = ({ getVideos }) => {
     // eslint-disable-next-line
   }, []);
   return (
-    <Container maxWidth="lg">
-      <Header />
-      <Main className={classes.root} />
-    </Container>
+    <div className={theme === 'Dark' ? classes.darkTeme : ''}>
+      <Container maxWidth="lg">
+        <Header />
+        <Main className={classes.root} />
+      </Container>
+    </div>
   );
 };
 
 Home.propTypes = {
   getVideos: func.isRequired,
+  theme: string.isRequired,
 };

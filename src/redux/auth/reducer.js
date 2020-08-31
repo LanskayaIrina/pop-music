@@ -2,6 +2,7 @@ import { AUTH_USER, LOG_OUT } from './actionTypes';
 
 const initialState = {
   isAuthorized: false,
+  userName: '',
 };
 
 export const authReducer = (state = initialState, action) => {
@@ -12,6 +13,7 @@ export const authReducer = (state = initialState, action) => {
       return {
         ...state,
         isAuthorized: payload.isAuthorized,
+        userName: payload.name,
       };
     case LOG_OUT:
       return initialState;

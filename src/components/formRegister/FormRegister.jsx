@@ -16,6 +16,12 @@ import { useFormik } from 'formik';
 const validateForm = values => {
   const errors = {};
 
+  if (!values.name) {
+    errors.name = 'Required';
+  } else if (values.name.length < 2) {
+    errors.name = 'Must be 2 characters or more';
+  }
+
   if (!values.email) {
     errors.email = 'Required';
   } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)) {
@@ -25,7 +31,7 @@ const validateForm = values => {
   if (!values.password) {
     errors.password = 'Required';
   } else if (values.password.length < 6) {
-    errors.password = 'Must be 6 characters or more';
+    errors.password = 'Must be 6 characters or more and 1 big letter, 1 small letter and 1 digit';
   } else if (!/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/.test(values.password)) {
     errors.password = 'Must be at list 1 big letter, 1 small letter and 1 digit';
   } else if (/\W/.test(values.password)) {
@@ -71,18 +77,24 @@ export const FormRegister = ({ authUser, addUser }) => {
 
   const formik = useFormik({
     initialValues: {
+      name: '',
       email: '',
       password: '',
     },
     validate: validateForm,
     onSubmit: () => {
       const user = {
-        name: formik.values.email,
+        name: formik.values.name,
+        email: formik.values.email,
         password: formik.values.password,
       };
       addUser(user);
 
-      authUser(true);
+      const userData = {
+        isAuthorized: true,
+        name: formik.values.name,
+      };
+      authUser(userData);
       push('/home');
     },
   });
@@ -103,11 +115,25 @@ export const FormRegister = ({ authUser, addUser }) => {
               margin="normal"
               required
               fullWidth
+              id="name"
+              label="Enter your name"
+              name="name"
+              autoComplete="name"
+              autoFocus
+              helperText={formik.errors.name}
+              type="name"
+              onChange={formik.handleChange}
+              value={formik.values.name}
+            />
+            <TextField
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
               id="email"
               label="Email Address"
               name="email"
               autoComplete="email"
-              autoFocus
               helperText={formik.errors.email}
               type="email"
               onChange={formik.handleChange}

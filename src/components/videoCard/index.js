@@ -4,10 +4,14 @@ import { VideoCard } from './VideoCard';
 import { showVideoInPayer } from '../../redux/videos/actions';
 import { addIdVideoToFavorite, addFavoriteVideo } from '../../redux/favorites/actions';
 
+const mapStateToProps = state => ({
+  theme: state.themeApp.theme,
+});
+
 const mapDispatchToProps = {
   showVideoInPayer,
   addIdVideoToFavorite,
   addFavoriteVideo,
 };
 
-export default connect(null, mapDispatchToProps)(VideoCard);
+export default connect(mapStateToProps, mapDispatchToProps)(VideoCard);
